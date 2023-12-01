@@ -9,7 +9,6 @@ import { TostBox } from './Toast/Toast';
 
 export const App = () => {
   const spiner = useSelector(selectorLoading);
-  const errror = useSelector(selectorError);
 
   return (
     <Container>
