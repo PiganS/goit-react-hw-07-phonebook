@@ -21,10 +21,17 @@ export const ContactForm = () => {
       toast.error(`${newContact.name} is already in contacts!`);
       return;
     }
-    toast.info(
-      `${newContact.name} - has been successfully added to your contacts`
-    );
-    dispatch(addNewContact(newContact));
+
+    dispatch(addNewContact(newContact))
+      .unwrap()
+      .then(() =>
+        toast.info(
+          `${newContact.name} - has been successfully added to your contacts`
+        )
+      )
+      .catch(err => {
+        toast.error(err);
+      });
   };
   const handleChange = e => {
     const { name, value } = e.target;
