@@ -1,31 +1,30 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { ButtonDel, Contact, ContactText } from './ContactList.styled';
-import { deleteContacts } from 'redux/contacts/contacts.reducer';
-import { selectorContacts, selectorFilter } from 'redux/contacts/selectors';
+
+import { selectShowContacts } from 'redux/contacts/selectors';
+import { useEffect } from 'react';
+import { deleteContact, fetchContacts } from 'redux/contacts/operations';
 
 export const ContactList = () => {
-  const contacts = useSelector(selectorContacts);
-  const filter = useSelector(selectorFilter);
   const dispatch = useDispatch();
+  const filteredContacts = useSelector(selectShowContacts);
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   const handleDeleteProduct = id => {
-    dispatch(deleteContacts(id));
+    dispatch(deleteContact(id));
   };
-
-  const filterElements = contacts => {
-    return contacts.filter(({ name }) =>
-      name.toLowerCase().includes(filter.toLowerCase())
-    );
-  };
-
-  const filteredContacts = filterElements(contacts);
 
   return (
     <ul>
       {filteredContacts.map(contact => (
         <Contact key={contact.id}>
           <ContactText>
-            {contact.name}: {contact.number}
+            {contact.name}
+            <br />
+            {contact.phone}
           </ContactText>
           <ButtonDel
             onClick={() => handleDeleteProduct(contact.id)}

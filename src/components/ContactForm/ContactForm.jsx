@@ -1,9 +1,10 @@
 import { nanoid } from 'nanoid';
 import { Button, Form, Input } from './ContactForm.styled';
 import { useState } from 'react';
-import { addContacts } from 'redux/contacts/contacts.reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectorContacts } from 'redux/contacts/selectors';
+import { addNewContact } from 'redux/contacts/operations';
+import { toast } from 'react-toastify';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
@@ -17,11 +18,13 @@ export const ContactForm = () => {
     );
 
     if (hasDuplicates) {
-      alert(`${newContact.name} is already in contacts!`);
+      toast.error(`${newContact.name} is already in contacts!`);
       return;
     }
-
-    dispatch(addContacts(newContact));
+    toast.info(
+      `${newContact.name} - has been successfully added to your contacts`
+    );
+    dispatch(addNewContact(newContact));
   };
   const handleChange = e => {
     const { name, value } = e.target;
